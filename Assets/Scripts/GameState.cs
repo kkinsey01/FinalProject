@@ -6,4 +6,7 @@ using UnityEngine;
 public class GameState : ScriptableObject
 {
     public int score {  get; set; }
+    public int level { get; set; }
+    public int health { get; set; }
+
 }

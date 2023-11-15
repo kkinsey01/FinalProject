@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("KeyBinds")]
     public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode smallJumpKey = KeyCode.LeftControl;
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -61,6 +62,12 @@ public class PlayerMovement : MonoBehaviour
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
+        if (Input.GetKey(smallJumpKey) && readyToJump && grounded)
+        {
+            readyToJump = false;
+            Jump2();
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
     }
     private void FixedUpdate()
     {
@@ -90,6 +97,11 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    }
+    private void Jump2()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        rb.AddForce(transform.up * jumpForce / 2, ForceMode.Impulse);
     }
     private void ResetJump()
     {
