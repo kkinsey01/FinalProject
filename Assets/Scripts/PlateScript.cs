@@ -6,7 +6,7 @@ public class PlateScript : MonoBehaviour
 {
     GameObject platform;
 
-    const float platformTimeMax = 5.0f;
+    const float platformTimeMax = 7.5f;
     float timeActive;
     bool activate;
     // Start is called before the first frame update

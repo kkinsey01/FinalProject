@@ -9,6 +9,9 @@ TagManager:
   - Water
   - Coin
   - Poison
+  - Checkpoint
+  - Cup
+  - Ball
   layers:
   - Default
   - TransparentFX

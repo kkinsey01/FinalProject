@@ -27,6 +27,14 @@ public class PlayerScript : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
+    private void checkpointCheck()
+    {
+        if (gameState.score >= 5)
+        {
+            int currIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currIndex + 1);
+        }
+    }
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.tag.Equals("Coin"))
@@ -44,6 +52,11 @@ public class PlayerScript : MonoBehaviour
         if (collision.gameObject.tag.Equals("Poison"))
         {
             gameState.health -= 5;
+        }
+        if (collision.gameObject.tag.Equals("Checkpoint"))
+        {
+            Debug.Log("Reached Checkpoint");
+            checkpointCheck();
         }
     }
 }
