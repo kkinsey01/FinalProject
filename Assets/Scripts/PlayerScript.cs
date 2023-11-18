@@ -14,12 +14,14 @@ public class PlayerScript : MonoBehaviour
         gameState.level = 1;
         gameState.health = 100;
         gameState.ballPickedUp = false;
+        gameState.levelComplete = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         endGameCheck();
+        checkpointCheck();
     }
     private void endGameCheck()
     {

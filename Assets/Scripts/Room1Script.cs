@@ -39,6 +39,7 @@ public class Room1Script : MonoBehaviour
         game2Text.enabled = false;
         gameState.ballPickedUp = false;
         gameState.roomStage = 1;
+        gameState.hoopGame = false;
         gameStart = false;
         post = GameObject.Find("Post");
         board = GameObject.Find("Board");
