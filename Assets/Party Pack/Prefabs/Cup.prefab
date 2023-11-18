@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 1901714772085694524}
   - component: {fileID: -6958708120854871151}
   - component: {fileID: -8058603056713241928}
+  - component: {fileID: 6119078939544755707}
   m_Layer: 10
-  m_Name: cup_01
-  m_TagString: Untagged
+  m_Name: Cup
+  m_TagString: Cup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,3 +134,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6119078939544755707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100420537350111721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa499ec146bfecc438bd5ce8b7bd01c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGrounded: 0

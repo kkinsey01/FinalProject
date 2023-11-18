@@ -8,10 +8,16 @@ public class ThrowBall : MonoBehaviour
     [SerializeField]
     public GameObject Ball;
 
+    [SerializeField]
+    public GameObject Ball2;
+
+    [SerializeField]
+    GameState gameState;
+
     public Transform posHold;
+    
 
     private float ballSpeed = 35.0f;
-    private Vector3 angle;
 
     private bool ballInHands = false;
     private bool ballFlying = false;
@@ -26,13 +32,26 @@ public class ThrowBall : MonoBehaviour
         ballRB = Ball.GetComponent<Rigidbody>();
         origPos = Ball.transform.position;
         activeBall = true;
+        gameState.ballCollision = false;
     }
     private void Update()
     {
+        if (gameState.roomStage == 1)
+        {
+            ballFunction(Ball);
+        }
+        else if (gameState.roomStage == 2)
+        {
+            ballFunction(Ball2);
+        }
+    }
+    void ballFunction(GameObject ball)
+    {
+        ballRB = ball.GetComponent<Rigidbody>();
         if (ballInHands)
         {
-            Debug.Log("Holding ball");
-            Ball.transform.position = posHold.position;
+            
+            ball.transform.position = posHold.position;
             if (Input.GetKeyUp(KeyCode.E))
             {
                 ballInHands = false;
@@ -43,36 +62,50 @@ public class ThrowBall : MonoBehaviour
         }
         if (ballFlying)
         {
-            Debug.Log("Ball is flying!");
-            T += Time.deltaTime;
-            float duration = .66f;
-            float t01 = T / duration;
-
-            
-            Vector3 camerDirection = cam.transform.forward;
-           
-            ballRB.velocity = camerDirection * ballSpeed;
-            if (t01 >= 1)
+            if (gameState.roomStage == 1)
             {
-                ballFlying = false;
-                ballRB.velocity = Vector3.zero;
+                T += Time.deltaTime;
+                float duration = .66f;
+                float t01 = T / duration;
+
+
+                Vector3 camerDirection = cam.transform.forward;
+
+                ballRB.velocity = camerDirection * ballSpeed;
+                if (t01 >= 1)
+                {
+                    ballFlying = false;
+                    ballRB.velocity = Vector3.zero;
+                }
+            }
+            else if (gameState.roomStage == 2)
+            {
+                Vector3 camerDirection = cam.transform.forward;
+                ballRB.velocity = camerDirection * ballSpeed;
+                T += Time.deltaTime;
+                float timeMax = 3.5f;
+                if (T > timeMax || gameState.ballCollision)
+                {
+                    ballFlying = false;
+                    ballRB.velocity = Vector3.zero;
+                }
             }
         }
-        
+
     }
     private void FixedUpdate()
     {
-        if (!activeBall)
+        if (!activeBall && gameState.roomStage == 1)
         {
             StartCoroutine(SpawnBall());
         }
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag.Equals("Ball"))
+        if (collision.gameObject.tag.Equals("Ball") || collision.gameObject.tag.Equals("Ball2"))
         {
+            gameState.ballPickedUp = true;
             ballInHands = true;
-            //ballRB.isKinematic = true;
         }
     }
     IEnumerator SpawnBall()

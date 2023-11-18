@@ -12,6 +12,8 @@ TagManager:
   - Checkpoint
   - Cup
   - Ball
+  - Rim
+  - Ball2
   layers:
   - Default
   - TransparentFX

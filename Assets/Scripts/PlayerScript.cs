@@ -13,6 +13,7 @@ public class PlayerScript : MonoBehaviour
         gameState.score = 0;
         gameState.level = 1;
         gameState.health = 100;
+        gameState.ballPickedUp = false;
     }
 
     // Update is called once per frame
@@ -32,6 +33,12 @@ public class PlayerScript : MonoBehaviour
         if (gameState.score >= 5)
         {
             int currIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currIndex + 1);
+        }
+        if (gameState.levelComplete)
+        {
+            int currIndex = SceneManager.GetActiveScene().buildIndex;
+            gameState.levelComplete = false;
             SceneManager.LoadScene(currIndex + 1);
         }
     }
