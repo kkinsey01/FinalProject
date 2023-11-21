@@ -13,5 +13,7 @@ public class GameState : ScriptableObject
     public int roomStage { get; set; }
     public bool ballCollision { get; set; }
     public bool levelComplete { get; set; }
+    public float movementSpeed { get; set; }
+    public bool canJump { get; set; }
 
 }

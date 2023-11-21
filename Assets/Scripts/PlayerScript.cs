@@ -8,6 +8,11 @@ public class PlayerScript : MonoBehaviour
     [SerializeField]
     GameState gameState;
     // Start is called before the first frame update
+
+    bool burnActive;
+    float burnTimeMax;
+    float burnTimer;
+    float elapsed;
     void Start()
     {
         gameState.score = 0;
@@ -15,6 +20,8 @@ public class PlayerScript : MonoBehaviour
         gameState.health = 100;
         gameState.ballPickedUp = false;
         gameState.levelComplete = false;
+        burnActive = false;
+        burnTimeMax = 4.0f;
     }
 
     // Update is called once per frame
@@ -22,7 +29,23 @@ public class PlayerScript : MonoBehaviour
     {
         endGameCheck();
         checkpointCheck();
+        if (burnActive)
+        {
+            elapsed += Time.deltaTime;
+            burnTimer += Time.deltaTime;
+            if (elapsed >= .625f)
+            {
+                ApplyBurn();
+                elapsed = elapsed % .625f;
+            }
+            if (burnTimer >= burnTimeMax)
+            {
+                burnActive = false;
+                burnTimer = 0.0f;
+            }
+        }
     }
+    
     private void endGameCheck()
     {
         if (gameState.health <= 0)
@@ -55,6 +78,11 @@ public class PlayerScript : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+        if (collision.gameObject.tag.Equals("Fire"))
+        {
+            burnActive = true;
+            burnTimer = 0.0f;
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -67,5 +95,20 @@ public class PlayerScript : MonoBehaviour
             Debug.Log("Reached Checkpoint");
             checkpointCheck();
         }
+        if (collision.gameObject.tag.Equals("RollingBall"))
+        {
+            gameState.health -= 10;
+        }
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.tag.Equals("Spike"))
+        {
+            gameState.health -= 10;
+        }
+    }
+    void ApplyBurn()
+    {
+        gameState.health--;
     }
 }

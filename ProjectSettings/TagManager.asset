@@ -14,6 +14,11 @@ TagManager:
   - Ball
   - Rim
   - Ball2
+  - Fire
+  - JumpPad
+  - TriggerPlate
+  - RollingBall
+  - Spike
   layers:
   - Default
   - TransparentFX

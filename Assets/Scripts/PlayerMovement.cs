@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField]
+    GameState gameState;
+
+
+
     [Header("Movement")]
     public float moveSpeed;
 
@@ -13,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     public bool readyToJump;
+    public float regJumpForce;
 
     [Header("KeyBinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -36,13 +42,17 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        regJumpForce = jumpForce;
+        gameState.movementSpeed = 7f;
+        gameState.canJump = true;
+        Debug.Log(gameState.movementSpeed);
     }
 
     // Update is called once per frame
     void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-
+        moveSpeed = gameState.movementSpeed;
         MyInput();
 
         if (grounded)
@@ -53,20 +63,22 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.drag = 0;
         }
-
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        if (gameState.canJump)
         {
-            readyToJump = false;
+            if (Input.GetKey(jumpKey) && readyToJump && grounded)
+            {
+                readyToJump = false;
 
-            Jump();
+                Jump();
 
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
-        if (Input.GetKey(smallJumpKey) && readyToJump && grounded)
-        {
-            readyToJump = false;
-            Jump2();
-            Invoke(nameof(ResetJump), jumpCooldown);
+                Invoke(nameof(ResetJump), jumpCooldown);
+            }
+            if (Input.GetKey(smallJumpKey) && readyToJump && grounded)
+            {
+                readyToJump = false;
+                Jump2();
+                Invoke(nameof(ResetJump), jumpCooldown);
+            }
         }
     }
     private void FixedUpdate()
@@ -106,5 +118,19 @@ public class PlayerMovement : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag.Equals("JumpPad"))
+        {
+            jumpForce = 1.75f * regJumpForce;
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag.Equals("JumpPad"))
+        {
+            jumpForce = regJumpForce;
+        }
     }
 }
