@@ -7,7 +7,7 @@ public class GameState : ScriptableObject
 {
     public int score {  get; set; }
     public int level { get; set; }
-    public int health { get; set; }
+    public int health { get; set; } = 100;
     public bool ballPickedUp { get; set; }
     public bool hoopGame {  get; set; }
     public int roomStage { get; set; }

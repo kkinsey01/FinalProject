@@ -19,6 +19,8 @@ TagManager:
   - TriggerPlate
   - RollingBall
   - Spike
+  - AngryLog
+  - Log
   layers:
   - Default
   - TransparentFX

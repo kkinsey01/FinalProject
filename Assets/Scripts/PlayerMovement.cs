@@ -45,7 +45,6 @@ public class PlayerMovement : MonoBehaviour
         regJumpForce = jumpForce;
         gameState.movementSpeed = 7f;
         gameState.canJump = true;
-        Debug.Log(gameState.movementSpeed);
     }
 
     // Update is called once per frame

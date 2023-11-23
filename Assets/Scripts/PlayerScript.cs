@@ -17,7 +17,6 @@ public class PlayerScript : MonoBehaviour
     {
         gameState.score = 0;
         gameState.level = 1;
-        gameState.health = 100;
         gameState.ballPickedUp = false;
         gameState.levelComplete = false;
         burnActive = false;
@@ -51,6 +50,7 @@ public class PlayerScript : MonoBehaviour
         if (gameState.health <= 0)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            gameState.health = 100;
         }
     }
     private void checkpointCheck()
@@ -98,6 +98,14 @@ public class PlayerScript : MonoBehaviour
         if (collision.gameObject.tag.Equals("RollingBall"))
         {
             gameState.health -= 10;
+        }
+        if(collision.gameObject.tag.Equals("AngryLog"))
+        {
+            gameState.health -= 10;
+        }
+        if (collision.gameObject.tag.Equals("Log"))
+        {
+            gameState.health -= 5;
         }
     }
     private void OnCollisionStay(Collision collision)
