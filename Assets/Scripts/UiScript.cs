@@ -11,19 +11,22 @@ public class UiScript : MonoBehaviour
     [SerializeField]
     public TextMeshProUGUI score;
 
-    [SerializeField]
-    public TextMeshProUGUI health;
+    public ProgressBar pb;
     // Start is called before the first frame update
     void Start()
     {
         score.text = "Coins: 0/5";
-        health.text = "Health: 100";
+        UpdateHealth();
     }
 
     // Update is called once per frame
     void Update()
     {
         score.text = "Coins: " + gameState.score + "/5";
-        health.text = "Health: " + gameState.health;
+        UpdateHealth();
+    }
+    public void UpdateHealth()
+    {
+        pb.BarValue = gameState.health;
     }
 }

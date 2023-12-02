@@ -27,7 +27,19 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         endGameCheck();
-        checkpointCheck();
+        if (gameState.levelComplete)
+        {
+            if (gameState.restartLevel)
+            {
+                gameState.levelComplete = false;
+                gameState.restartLevel = false;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            else
+            {
+                checkpointCheck();
+            }
+        }
         if (burnActive)
         {
             elapsed += Time.deltaTime;
@@ -41,6 +53,13 @@ public class PlayerScript : MonoBehaviour
             {
                 burnActive = false;
                 burnTimer = 0.0f;
+            }
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 7)
+        {
+            if (Input.GetKeyUp(KeyCode.R))
+            {
+                SceneManager.LoadScene("Room4Fight");
             }
         }
     }
@@ -64,6 +83,7 @@ public class PlayerScript : MonoBehaviour
         {
             int currIndex = SceneManager.GetActiveScene().buildIndex;
             gameState.levelComplete = false;
+            gameState.level++;
             SceneManager.LoadScene(currIndex + 1);
         }
     }
@@ -71,6 +91,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (collision.tag.Equals("Coin"))
         {
+            Debug.Log("add coin");
             gameState.score++;
             Destroy(collision.gameObject);
         }
@@ -89,6 +110,7 @@ public class PlayerScript : MonoBehaviour
         if (collision.gameObject.tag.Equals("Poison"))
         {
             gameState.health -= 5;
+            TakeDamage();
         }
         if (collision.gameObject.tag.Equals("Checkpoint"))
         {
@@ -98,25 +120,47 @@ public class PlayerScript : MonoBehaviour
         if (collision.gameObject.tag.Equals("RollingBall"))
         {
             gameState.health -= 10;
+            TakeDamage();
         }
         if(collision.gameObject.tag.Equals("AngryLog"))
         {
             gameState.health -= 10;
+            TakeDamage();
         }
         if (collision.gameObject.tag.Equals("Log"))
         {
             gameState.health -= 5;
+            TakeDamage();
+        }
+        if (collision.gameObject.tag.Equals("Medkit"))
+        {
+            int addHealth = (int) (.5 * gameState.health);
+            if (gameState.health + addHealth >= 100)
+            {
+                gameState.health = 100;
+            }
+            else
+            {
+                gameState.health += addHealth;
+            }
+            gameState.addHealth = true;
+            Destroy(collision.gameObject);
         }
     }
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag.Equals("Spike"))
         {
-            gameState.health -= 10;
+            gameState.health -= 1;
+            TakeDamage();
         }
     }
     void ApplyBurn()
     {
         gameState.health--;
+    }
+    void TakeDamage()
+    {
+        gameState.takeDamage = true;
     }
 }

@@ -15,5 +15,9 @@ public class GameState : ScriptableObject
     public bool levelComplete { get; set; }
     public float movementSpeed { get; set; }
     public bool canJump { get; set; }
+    public bool takeDamage { get; set; } = false;
+    public bool addHealth { get; set; } = false;
+    public bool restartLevel { get; set; } = false;
+    public bool throwBall { get; set; } = false;
 
 }

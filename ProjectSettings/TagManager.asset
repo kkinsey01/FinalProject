@@ -21,11 +21,13 @@ TagManager:
   - Spike
   - AngryLog
   - Log
+  - Barrel
+  - Medkit
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PostProcessing
   - Water
   - UI
   - 

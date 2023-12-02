@@ -35,8 +35,21 @@ public class PlayerMovement : MonoBehaviour
     float verticalInput;
 
     Vector3 moveDirection;
+    Vector3 oldPos;
 
     Rigidbody rb;
+
+    public float rotationSpeed;
+
+    private enum AnimationStateEnum
+    {
+        Idle = 0,
+        Running = 1,
+        Jumping = 2,
+        Throw = 3
+    }
+    Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,15 +58,17 @@ public class PlayerMovement : MonoBehaviour
         regJumpForce = jumpForce;
         gameState.movementSpeed = 7f;
         gameState.canJump = true;
+        animator = gameObject.transform.Find("Model").GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
         moveSpeed = gameState.movementSpeed;
         MyInput();
-
+        SetAnimationState();
         if (grounded)
         {
             rb.drag = groundDrag;
@@ -79,10 +94,20 @@ public class PlayerMovement : MonoBehaviour
                 Invoke(nameof(ResetJump), jumpCooldown);
             }
         }
+        if (moveDirection != Vector3.zero)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+        }
     }
     private void FixedUpdate()
     {
         MovePlayer();
+    }
+    private void LateUpdate()
+    {
+        oldPos = transform.position;
     }
     private void MyInput()
     {
@@ -131,5 +156,30 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpForce = regJumpForce;
         }
+    }
+    void SetAnimationState()
+    {
+        AnimationStateEnum playerAnimationState;
+        if (grounded)
+        {
+            if (moveDirection == Vector3.zero)
+            {
+                playerAnimationState = AnimationStateEnum.Idle;
+            }
+            else
+            {
+                playerAnimationState = AnimationStateEnum.Running;
+            }
+        }
+        else
+        {
+            playerAnimationState = AnimationStateEnum.Jumping;
+        }
+        if (gameState.throwBall)
+        {
+            playerAnimationState = AnimationStateEnum.Throw;
+            gameState.throwBall = false;
+        }
+        animator.SetInteger("playerState", (int)playerAnimationState);
     }
 }

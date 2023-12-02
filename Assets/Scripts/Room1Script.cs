@@ -84,7 +84,8 @@ public class Room1Script : MonoBehaviour
         }
         else if (gameComplete && !gameWon)
         {
-            cupTimer.text = "You lost.";
+            cupTimer.text = "You lost, try again.";
+            gameState.restartLevel = true;
             gameState.levelComplete = true;
         }
 

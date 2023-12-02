@@ -14,15 +14,25 @@ public class ThrowBall : MonoBehaviour
     [SerializeField]
     GameState gameState;
 
+    [SerializeField]
+    public GameObject temp;
+
+    [SerializeField]
+    public GameObject player;
+
     public Transform posHold;
     
 
-    private float ballSpeed = 35.0f;
+    private float ballSpeed = 32.5f;
 
     private bool ballInHands = false;
     private bool ballFlying = false;
     private float T = 0;
     private Vector3 origPos;
+    private bool boolsSet = false;
+    private bool throwSet = false;
+    float timer;
+    float delay1 = .5f;
 
     private bool activeBall;
     Rigidbody ballRB;
@@ -42,6 +52,11 @@ public class ThrowBall : MonoBehaviour
         }
         else if (gameState.roomStage == 2)
         {
+            if (!boolsSet)
+            {
+                SetBools();
+                boolsSet = true;
+            }
             ballFunction(Ball2);
         }
     }
@@ -52,16 +67,27 @@ public class ThrowBall : MonoBehaviour
         {
             
             ball.transform.position = posHold.position;
+            ball.transform.parent = temp.transform;
+            Physics.IgnoreCollision(ball.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
             if (Input.GetKeyUp(KeyCode.E))
             {
-                ballInHands = false;
-                ballFlying = true;
-                activeBall = false;
-                T = 0;
+                gameState.throwBall = true;
+                throwSet = true;
+            }
+            if (throwSet)
+            {
+                timer += Time.deltaTime;
+                if (timer >= delay1)
+                {
+                    timer = 0;
+                    throwSet = false;
+                    activateThrow();
+                }
             }
         }
         if (ballFlying)
         {
+            ball.transform.parent = null;
             if (gameState.roomStage == 1)
             {
                 T += Time.deltaTime;
@@ -76,6 +102,7 @@ public class ThrowBall : MonoBehaviour
                 {
                     ballFlying = false;
                     ballRB.velocity = Vector3.zero;
+                    Physics.IgnoreCollision(ball.GetComponent<Collider>(), player.GetComponent<Collider>(), false);
                 }
             }
             else if (gameState.roomStage == 2)
@@ -88,6 +115,7 @@ public class ThrowBall : MonoBehaviour
                 {
                     ballFlying = false;
                     ballRB.velocity = Vector3.zero;
+                    Physics.IgnoreCollision(ball.GetComponent<Collider>(), player.GetComponent<Collider>(), false);
                 }
             }
         }
@@ -113,5 +141,22 @@ public class ThrowBall : MonoBehaviour
         Instantiate(Ball, origPos, Quaternion.identity);
         activeBall = true;
         yield return new WaitForSeconds(5f);
+    }
+    private void SetBools()
+    {
+        ballInHands = false;
+        ballFlying = false;
+        activeBall = false;
+    }
+    private void activateThrow()
+    {
+        ballInHands = false;
+        ballFlying = true;
+        activeBall = false;
+        T = 0;
+    }
+    IEnumerator timeDelay(float time)
+    {
+        yield return new WaitForSeconds(time);
     }
 }

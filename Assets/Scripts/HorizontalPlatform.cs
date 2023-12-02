@@ -17,7 +17,7 @@ public class HorizontalPlatform : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Vector3 currentPosition = transform.position;
         if (currentPosition.x <= minX)
@@ -38,5 +38,13 @@ public class HorizontalPlatform : MonoBehaviour
         }
         transform.position = currentPosition;
     }
-    
+    private void OnCollisionEnter(Collision collision)
+    {
+        collision.transform.SetParent(transform);
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        collision.transform.SetParent(null);
+    }
+
 }
