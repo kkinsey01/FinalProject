@@ -20,4 +20,7 @@ public class GameState : ScriptableObject
     public bool restartLevel { get; set; } = false;
     public bool throwBall { get; set; } = false;
 
+    public bool damageDone { get; set; } = false;
+    public string playerName { get; set; }
+
 }

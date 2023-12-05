@@ -55,7 +55,7 @@ public class PlayerScript : MonoBehaviour
                 burnTimer = 0.0f;
             }
         }
-        if (SceneManager.GetActiveScene().buildIndex == 7)
+        if (SceneManager.GetActiveScene().buildIndex == 8)
         {
             if (Input.GetKeyUp(KeyCode.R))
             {

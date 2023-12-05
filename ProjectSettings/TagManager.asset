@@ -23,6 +23,18 @@ TagManager:
   - Log
   - Barrel
   - Medkit
+  - Dragon
+  - Sword
+  - Decoy
+  - Health
+  - Book
+  - Phone
+  - Bottle
+  - Tool
+  - Toothbrush
+  - Fake
+  - SmallHealthKit
+  - CollectCup
   layers:
   - Default
   - TransparentFX

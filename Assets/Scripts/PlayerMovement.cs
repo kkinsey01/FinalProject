@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -39,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody rb;
 
+    bool bossFight;
+    bool swingSword;
+
     public float rotationSpeed;
 
     private enum AnimationStateEnum
@@ -46,7 +50,9 @@ public class PlayerMovement : MonoBehaviour
         Idle = 0,
         Running = 1,
         Jumping = 2,
-        Throw = 3
+        Throw = 3,
+        SwingSword = 4,
+        RunWithSword = 5
     }
     Animator animator;
 
@@ -59,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
         gameState.movementSpeed = 7f;
         gameState.canJump = true;
         animator = gameObject.transform.Find("Model").GetComponent<Animator>();
+        bossFight = false;
+        swingSword = false;
     }
 
     // Update is called once per frame
@@ -99,6 +107,18 @@ public class PlayerMovement : MonoBehaviour
             Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
 
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 8)
+        {
+            bossFight = true;
+        }
+        if (bossFight)
+        {
+            if (Input.GetKeyUp(KeyCode.F) && grounded)
+            {
+                Debug.Log("Swinging");
+                swingSword = true;
+            }
         }
     }
     private void FixedUpdate()
@@ -168,7 +188,14 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                playerAnimationState = AnimationStateEnum.Running;
+                if (!bossFight)
+                {
+                    playerAnimationState = AnimationStateEnum.Running;
+                }
+                else
+                {
+                    playerAnimationState = AnimationStateEnum.RunWithSword;
+                }
             }
         }
         else
@@ -180,6 +207,15 @@ public class PlayerMovement : MonoBehaviour
             playerAnimationState = AnimationStateEnum.Throw;
             gameState.throwBall = false;
         }
+        if (swingSword)
+        {
+            playerAnimationState = AnimationStateEnum.SwingSword;
+            swingSword = false;
+        }
         animator.SetInteger("playerState", (int)playerAnimationState);
+    }
+    void ResetDamageDone()
+    {
+        gameState.damageDone = false;
     }
 }
