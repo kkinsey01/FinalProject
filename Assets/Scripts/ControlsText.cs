@@ -19,9 +19,4 @@ public class ControlsText : MonoBehaviour
                         + "Ctrl for small jump";
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

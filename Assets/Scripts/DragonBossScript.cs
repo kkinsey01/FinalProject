@@ -37,6 +37,9 @@ public class DragonBossScript : MonoBehaviour
     bool isGrounded;
     bool hitPlayer;
 
+    float deathTimer = 2.133f;
+    float timer;
+
     private enum AnimationStateEnum
     {
         Idle = 0,
@@ -62,6 +65,7 @@ public class DragonBossScript : MonoBehaviour
         hitPlayer = false;
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         healthBar.UpdateHealthBar(health, maxHealth);
+        timer = 0f;
     }
 
     // Update is called once per frame
@@ -96,6 +100,15 @@ public class DragonBossScript : MonoBehaviour
             transform.position = origPos;
         }
         Debug.Log(health);
+        if (health <= 0)
+        {
+            currentState = 7;
+            timer += Time.deltaTime;
+            if (timer >= deathTimer)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
     void AttackChoice()
     {
@@ -171,6 +184,7 @@ public class DragonBossScript : MonoBehaviour
         {
             hitPlayer = true;
             gameState.health -= 10;
+            gameState.takeDamage = true;
         }
     }
     private void OnCollisionExit(Collision collision)

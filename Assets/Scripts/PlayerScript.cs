@@ -103,6 +103,7 @@ public class PlayerScript : MonoBehaviour
         {
             burnActive = true;
             burnTimer = 0.0f;
+            gameState.takeDamage = true;
         }
     }
     private void OnCollisionEnter(Collision collision)

@@ -23,7 +23,6 @@ public class Room1Script : MonoBehaviour
     bool gameWon;
     bool gameStart;
     bool game2Active;
-    bool powerUpChoosing;
     GameObject[] cups;
     GameObject[] balls;
 
@@ -33,7 +32,7 @@ public class Room1Script : MonoBehaviour
     {
         cups = GameObject.FindGameObjectsWithTag("Cup");
         timer = 0;
-        maxTime = 15.5f;
+        maxTime = 10f;
         cupTimer.text = "You have " + maxTime + " seconds to knock all the cups over!";
         game2Text.text = "Shoot ball through hoop to recieve powerup!";
         game2Text.enabled = false;
@@ -50,7 +49,6 @@ public class Room1Script : MonoBehaviour
         rim.SetActive(false);
         ball2.SetActive(false);
         game2Active = false;
-        powerUpChoosing = false;
     }
 
     // Update is called once per frame
@@ -81,6 +79,7 @@ public class Room1Script : MonoBehaviour
         if (gameComplete && gameWon)
         {
             cupTimer.text = "You win! Continue to next phase...";
+            gameState.restartLevel = false;
         }
         else if (gameComplete && !gameWon)
         {
@@ -102,7 +101,6 @@ public class Room1Script : MonoBehaviour
         {
             if (gameState.hoopGame)
             {
-                powerUpChoosing = true; // let user choose a power up
                 gameState.levelComplete = true;
             }
         }
