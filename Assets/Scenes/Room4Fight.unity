@@ -407,7 +407,7 @@ MonoBehaviour:
   volumeTrigger: {fileID: 274953836}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
   antialiasingMode: 0
@@ -1381,7 +1381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8368682916871586867, guid: cc430d56deb69a140bd6592e398bab3b, type: 3}
       propertyPath: m_CollisionDetection
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9144944176608521232, guid: cc430d56deb69a140bd6592e398bab3b, type: 3}
       propertyPath: m_LocalPosition.x
