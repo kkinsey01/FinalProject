@@ -35,6 +35,8 @@ TagManager:
   - Fake
   - SmallHealthKit
   - CollectCup
+  - KitchenItem
+  - Money
   layers:
   - Default
   - TransparentFX

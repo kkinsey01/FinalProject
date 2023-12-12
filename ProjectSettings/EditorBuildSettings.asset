@@ -35,4 +35,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Room4Fight.unity
     guid: ae68c42f4b6e5b14a92344355d36276e
+  - enabled: 1
+    path: Assets/Scenes/End Game.unity
+    guid: a69c41804b34a6943bfc629a5495661c
   m_configObjects: {}

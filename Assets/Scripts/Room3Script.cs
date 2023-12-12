@@ -18,14 +18,14 @@ public class Room3Script : MonoBehaviour
     bool bookCollected;
     bool bottleCollected;
     bool cupCollected;
-    bool toothBrushCollected;
+    bool kitchenItemCollected;
 
     int phoneValue;
     int toolValue;
     int bookValue;
     int bottleValue;
     int cupValue;
-    int toothBrushValue;
+    int kitchenItemValue;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,21 +34,21 @@ public class Room3Script : MonoBehaviour
         bookCollected = false;
         bottleCollected = false;
         cupCollected = false;
-        toothBrushCollected = false;
+        kitchenItemCollected = false;
 
         phoneValue = 0;
         toolValue = 0;
         bookValue = 0;    
         bottleValue = 0;
         cupValue = 0;
-        toothBrushValue = 0;
+        kitchenItemValue = 0;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (phoneCollected && toolCollected && bookCollected && bottleCollected && cupCollected && toothBrushCollected) 
+        if (phoneCollected && toolCollected && bookCollected && bottleCollected && cupCollected && kitchenItemCollected) 
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
@@ -72,11 +72,11 @@ public class Room3Script : MonoBehaviour
         {
             cupValue = 1;
         }
-        if (toothBrushCollected)
+        if (kitchenItemCollected)
         {
-            toothBrushValue = 1;
+            kitchenItemValue = 1;
         }
-        room3Score.text = phoneValue + "/1 Phones\n" + toolValue + "/1 Tools\n" + bookValue + "/1 Books\n" + bottleValue + "/1 Bottles\n" + cupValue + "/1 Cups\n" + toothBrushValue + "/1 Toothbrushes"; 
+        room3Score.text = phoneValue + "/1 Phones\n" + toolValue + "/1 Tools\n" + bookValue + "/1 Books\n" + bottleValue + "/1 Bottles\n" + cupValue + "/1 Cups\n" + kitchenItemValue + "/1 Kitchen Items"; 
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -100,9 +100,9 @@ public class Room3Script : MonoBehaviour
         {
             cupCollected = true;
         }
-        else if (collision.gameObject.tag.Equals("Toothbrush"))
+        else if (collision.gameObject.tag.Equals("KitchenItem"))
         {
-            toothBrushCollected = true;
+            kitchenItemCollected = true;
         }
         else if (collision.gameObject.tag.Equals("Decoy"))
         {
@@ -112,6 +112,10 @@ public class Room3Script : MonoBehaviour
         else if (collision.gameObject.tag.Equals("SmallHealthKit"))
         {
             gameState.health += 5;
+        }
+        else if (collision.gameObject.tag.Equals("Money"))
+        {
+            SceneManager.LoadSceneAsync("Room3");
         }
         if (collision.gameObject.tag.Equals("Ground"))
         {

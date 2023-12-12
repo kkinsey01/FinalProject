@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class DragonBossScript : MonoBehaviour
 {
@@ -28,7 +29,6 @@ public class DragonBossScript : MonoBehaviour
 
     float border1Z, border2X, border3Z, border4X;
     int currentState;
-    Vector3 moveDirection;
     Vector3 currPlayerPos;
     Animator animator;
     Rigidbody rb;
@@ -37,7 +37,7 @@ public class DragonBossScript : MonoBehaviour
     bool isGrounded;
     bool hitPlayer;
 
-    float deathTimer = 2.133f;
+    float deathTimer = 2.5f;
     float timer;
 
     private enum AnimationStateEnum
@@ -66,6 +66,7 @@ public class DragonBossScript : MonoBehaviour
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         healthBar.UpdateHealthBar(health, maxHealth);
         timer = 0f;
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -85,7 +86,7 @@ public class DragonBossScript : MonoBehaviour
             {
                 if (isGrounded)
                 {
-                    transform.position += transform.forward * speed * Time.deltaTime;
+                    rb.MovePosition(transform.position + transform.forward * speed * Time.deltaTime);
                     currentState = 1;
                     SetAnimationState();
                 }
@@ -95,10 +96,6 @@ public class DragonBossScript : MonoBehaviour
                 AttackChoice();
             }
         }
-        if (transform.position.y < -3f)
-        {
-            transform.position = origPos;
-        }
         Debug.Log(health);
         if (health <= 0)
         {
@@ -107,6 +104,7 @@ public class DragonBossScript : MonoBehaviour
             if (timer >= deathTimer)
             {
                 Destroy(gameObject);
+                SceneManager.LoadSceneAsync(10);
             }
         }
     }
@@ -185,6 +183,20 @@ public class DragonBossScript : MonoBehaviour
             hitPlayer = true;
             gameState.health -= 10;
             gameState.takeDamage = true;
+        }
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (!gameState.damageDone)
+        {
+            if (collision.gameObject.tag.Equals("Sword"))
+            {
+                Debug.Log("Dragon Hit");
+                currentState = 6;
+                health -= 10;
+                healthBar.UpdateHealthBar(health, maxHealth);
+                gameState.damageDone = true;
+            }
         }
     }
     private void OnCollisionExit(Collision collision)
