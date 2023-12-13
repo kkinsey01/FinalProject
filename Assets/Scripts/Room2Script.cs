@@ -31,7 +31,7 @@ public class Room2Script : MonoBehaviour
         freelookCam = GameObject.Find("FreeLook Camera");
         aboveCam = GameObject.Find("Virtual Camera");
         sceneType = 1;
-        timer = 179.0f;
+        timer = 89.0f;
         timerActive = false;
         setSpeeds = true;
     }
